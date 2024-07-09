@@ -1,0 +1,15 @@
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\bin\Debug\net8.0\MathGame.exe
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\bin\Debug\net8.0\MathGame.deps.json
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\bin\Debug\net8.0\MathGame.runtimeconfig.json
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\bin\Debug\net8.0\MathGame.dll
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\bin\Debug\net8.0\MathGame.pdb
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\obj\Debug\net8.0\MathGame.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\obj\Debug\net8.0\MathGame.AssemblyInfoInputs.cache
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\obj\Debug\net8.0\MathGame.AssemblyInfo.cs
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\obj\Debug\net8.0\MathGame.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\obj\Debug\net8.0\MathGame.sourcelink.json
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\obj\Debug\net8.0\MathGame.dll
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\obj\Debug\net8.0\refint\MathGame.dll
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\obj\Debug\net8.0\MathGame.pdb
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\obj\Debug\net8.0\MathGame.genruntimeconfig.cache
+C:\Users\Lenovo\Desktop\CsharpProjects\MathGame\MathGame\obj\Debug\net8.0\ref\MathGame.dll
