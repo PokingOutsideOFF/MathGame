@@ -1,98 +1,173 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using System.ComponentModel;
 
-string[] log = new string[100];
+List<string> log = new List<string>();
 int num1 = 0, num2 = 0;
 int choice = 0;
+int answer = 0;
+string? readResult;
+int gamesPlayed = 1;
 
-void input()
+
+void Menu()
 {
+    Random numGenerator = new Random();
 
-    Console.WriteLine("Operation Menu: ");
-    Console.WriteLine("1. Addition ");
-    Console.WriteLine("2. Subtraction ");
-    Console.WriteLine("3. Multiplication ");
-    Console.WriteLine("4. Division ");
-    Console.WriteLine("5. Log History ");
-    Console.WriteLine("6. Exit");
-    Console.Write("Enter choice ");
-    choice = int.Parse(Console.ReadLine());
-
+    bool validOption = false;
+    do
+    {
+        Console.WriteLine("\nOperation Menu: ");
+        Console.WriteLine("1. Addition ");
+        Console.WriteLine("2. Subtraction ");
+        Console.WriteLine("3. Multiplication ");
+        Console.WriteLine("4. Division ");
+        Console.WriteLine("5. Log History ");
+        Console.WriteLine("6. Exit");
+        Console.Write("\nEnter choice ");
+        readResult = Console.ReadLine();
+        if (int.TryParse(readResult, out choice))
+        {
+            validOption = true;
+        }
+        else    
+           Console.WriteLine("\nEnter valid integer!!!");
+    } while (!validOption);
     if (choice < 5)
     {
-
-        Console.WriteLine("Enter the numbers: ");
-        string? s1 = Console.ReadLine();
-        string? s2 = Console.ReadLine();
-        num1 = int.Parse(s1);
-        num2 = int.Parse(s2);
+        num1 = numGenerator.Next(1, 101);
+        num2 = numGenerator.Next(1, num1);
+        if (choice == 4)
+        {
+            while (true)
+            {
+                if (num1 % num2 == 0)
+                    break;
+                num2 = numGenerator.Next(1, num1);
+            }
+        }
     }
 }
 
-void Add(int x, int y, int i)
+void Input()
 {
-    log[i] = $"{x} + {y} = {(x + y)}";
-    Console.WriteLine($"\nResult: {(x + y)}\n");
-}
-
-void Subtract(int x, int y, int i)
-{
-    log[i] = $"{x} - {y} = {(x - y)}";
-    Console.WriteLine($"\nResult: {(x - y)}\n");
-}
-
-void Multiply(int x, int y, int i)
-{
-    log[i] = $"{x} * {y} = {(x * y)}";
-    Console.WriteLine($"\nResult: {(x * y)}\n");
-}
-
-void Division(int x, int y, int i)
-{
-    if (x % y == 0 && y != 0)
+    bool incorrectInput = true;
+    do
     {
-        Console.WriteLine($"\nResult: {(x / y)}\n");
-        log[i] = $"{x} / {y} = {(x / y)}";
-    }
-    else
-    {
-        Console.WriteLine("\nInvalid Operation\n");
-        log[i] = "Invalid Operation";
-    }
+        Console.Write("Enter you ans: ");
+        readResult = Console.ReadLine();
+        if (int.TryParse(readResult, out answer))
+            incorrectInput = false;
+        else
+            Console.WriteLine("Enter valid Integer");
+    } while (incorrectInput);
+}
+
+int Add(int x, int y)
+{
+    int result = 0;
+
+    string question = $"What is {num1} + {num2}?";
+    Console.WriteLine(question);
+    result = num1 + num2;
+    log.Add(question);
+    return result;
+}
+
+int Subtract(int x, int y)
+{
+    int result = 0;
+    string question = $"What is {num1} - {num2}?";
+    Console.WriteLine(question);
+    result = num1 - num2;
+    log.Add(question);
+    return result;
+}
+
+int Multiply(int x, int y)
+{
+    int result = 0;
+    string question = $"What is {num1} * {num2}?";
+    Console.WriteLine(question);
+    result = num1 * num2;
+    log.Add(question);
+    return result;
+}
+
+int Division(int x, int y)
+{
+    int result = 0;
+    string question = $"What is {num1} / {num2}?";
+    Console.WriteLine(question);
+    result = num1 / num2;
+    log.Add(question);
+    return result;
+
 }
 
 void LogHistory()
 {
-    Console.WriteLine("");
+    if (log.Count == 0)
+    {
+        Console.WriteLine("\nNo games played yet!!");
+        return;
+    }
+    // Console.WriteLine("");
     foreach (string str in log)
     {
-        if (str == null)
-        {
-            break;
-        }
         Console.WriteLine(str);
     }
     Console.WriteLine();
+}
+
+void Compare(int calculatedResult)
+{
+    log.Add($"Your answer: {answer}");
+    if (calculatedResult == answer)
+    {
+        log.Add("Congrats! Your answer is correct");
+        Console.WriteLine("Congrats! Your answer is correct");
+    }
+    else
+    {
+        log.Add("Sorry your answer is wrong");
+        Console.WriteLine("Sorry your answer is wrong");
+    }
 }
 
 int i = 0;
 do
 {
 
-    input();
+    Menu();
+    int calculatedResult = 0;
     switch (choice)
     {
         case 1:
-            Add(num1, num2, i);
+            log.Add($"\nGame {gamesPlayed}");
+            gamesPlayed++;
+            calculatedResult = Add(num1, num2);
+            Input();
+            Compare(calculatedResult);
             break;
         case 2:
-            Subtract(num1, num2, i);
+            log.Add($"\nGame {gamesPlayed}");
+            gamesPlayed++;
+            calculatedResult = Subtract(num1, num2);
+            Input();
+            Compare(calculatedResult);
             break;
         case 3:
-            Multiply(num1, num2, i);
+            log.Add($"\nGame {gamesPlayed}");
+            gamesPlayed++;
+            calculatedResult = Multiply(num1, num2);
+            Input();
+            Compare(calculatedResult);
             break;
         case 4:
-            Division(num1, num2, i);
+            log.Add($"\nGame {gamesPlayed}");
+            gamesPlayed++;
+            calculatedResult = Division(num1, num2);
+            Input();
+            Compare(calculatedResult);
             break;
         case 5:
             LogHistory();
@@ -104,6 +179,7 @@ do
             Console.WriteLine("\nInvalid Choice\n");
             break;
     }
-    i++;
+
+
 } while (choice != 6 && i < 100);
 
