@@ -1,4 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 List<string> log = new List<string>();
 int num1 = 0, num2 = 0;
@@ -6,6 +9,7 @@ int choice = 0;
 int answer = 0;
 string? readResult;
 int gamesPlayed = 1;
+Stopwatch stopwatch = new Stopwatch();
 
 
 void Menu()
@@ -54,6 +58,7 @@ void Input()
     {
         Console.Write("Enter you ans: ");
         readResult = Console.ReadLine();
+
         if (int.TryParse(readResult, out answer))
             incorrectInput = false;
         else
@@ -131,6 +136,10 @@ void Compare(int calculatedResult)
         log.Add("Sorry your answer is wrong");
         Console.WriteLine("Sorry your answer is wrong");
     }
+    stopwatch.Stop();
+    TimeSpan timeTaken = stopwatch.Elapsed;
+    log.Add($"Time taken: {timeTaken.Seconds} seconds and {timeTaken.Milliseconds} milliseconds.");
+    Console.WriteLine($"Time taken: {timeTaken.Seconds} seconds and {timeTaken.Milliseconds} milliseconds.");
 }
 
 int i = 0;
@@ -138,13 +147,17 @@ do
 {
 
     Menu();
-    int calculatedResult = 0;
+    int calculatedResult;
+
+    
+
     switch (choice)
     {
         case 1:
             log.Add($"\nGame {gamesPlayed}");
             gamesPlayed++;
             calculatedResult = Add(num1, num2);
+            stopwatch.Start();
             Input();
             Compare(calculatedResult);
             break;
@@ -152,6 +165,7 @@ do
             log.Add($"\nGame {gamesPlayed}");
             gamesPlayed++;
             calculatedResult = Subtract(num1, num2);
+            stopwatch.Start();
             Input();
             Compare(calculatedResult);
             break;
@@ -159,6 +173,7 @@ do
             log.Add($"\nGame {gamesPlayed}");
             gamesPlayed++;
             calculatedResult = Multiply(num1, num2);
+            stopwatch.Start();
             Input();
             Compare(calculatedResult);
             break;
@@ -166,6 +181,7 @@ do
             log.Add($"\nGame {gamesPlayed}");
             gamesPlayed++;
             calculatedResult = Division(num1, num2);
+            stopwatch.Start();
             Input();
             Compare(calculatedResult);
             break;
@@ -179,6 +195,7 @@ do
             Console.WriteLine("\nInvalid Choice\n");
             break;
     }
+    stopwatch.Reset();
 
 
 } while (choice != 6 && i < 100);
