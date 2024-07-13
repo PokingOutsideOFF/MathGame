@@ -9,4 +9,4 @@ Challenges:
 1. Try to implement levels of difficulty. (Done)
 2. Add a timer to track how long the user takes to finish the game. (Done)
 3. Add a function that let's the user pick the number of questions.
-4. Create a 'Random Game' option where the players will be presented with questions from random operations
+4. Create a 'Random Game' option where the players will be presented with questions from random operations (Done)
