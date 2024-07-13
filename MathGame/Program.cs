@@ -3,42 +3,134 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-List<string> log = new List<string>();
-int num1 = 0, num2 = 0;
-int choice;
-int answer;
-string? readResult;
-int gamesPlayed = 1;
-Stopwatch stopwatch = new Stopwatch();
-
-
-void Menu()
+class MathGame
 {
-    Random numGenerator = new Random();
+    private List<string> log = new List<string>();
+    private int num1, num2;
+    private int choice;
+    private int answer;
+    private string? readResult;
+    private int gamesPlayed = 1;
+    private Stopwatch stopwatch = new Stopwatch();
 
-    bool validOption = false;
-    do
+    public void Run()
     {
-        Console.WriteLine("\nOperation Menu: ");
-        Console.WriteLine("1. Addition ");
-        Console.WriteLine("2. Subtraction ");
-        Console.WriteLine("3. Multiplication ");
-        Console.WriteLine("4. Division ");
-        Console.WriteLine("5. Log History ");
-        Console.WriteLine("6. Exit");
-        Console.Write("\nEnter choice ");
-        readResult = Console.ReadLine();
-        if (int.TryParse(readResult, out choice))
+        int i = 0;
+        do
         {
-            validOption = true;
-        }
-        else    
-           Console.WriteLine("\nEnter valid integer!!!");
-    } while (!validOption);
-    if (choice < 5)
+            Menu();
+            int calculatedResult;
+            stopwatch.Start();
+            switch (choice)
+            {
+
+                case 1:
+                    log.Add($"\nGame {gamesPlayed}");
+                    gamesPlayed++;
+                    Operation('+');
+                    calculatedResult = num1 + num2;
+                    break;
+                case 2:
+                    log.Add($"\nGame {gamesPlayed}");
+                    gamesPlayed++;
+                    Operation('-');
+                    calculatedResult = num1 - num2;
+                    break;
+                case 3:
+                    log.Add($"\nGame {gamesPlayed}");
+                    gamesPlayed++;
+                    Operation('*');
+                    calculatedResult = num1 * num2;
+                    break;
+                case 4:
+                    log.Add($"\nGame {gamesPlayed}");
+                    gamesPlayed++;
+                    Operation('/');
+                    calculatedResult = num1 / num2;
+                    break;
+                case 5:
+                    LogHistory();
+                    continue;
+                case 6:
+                    Console.WriteLine("\nExiting....\n");
+                    continue;
+                default:
+                    Console.WriteLine("\nInvalid Choice\n");
+                    continue;
+            }
+            Input();
+            Compare(calculatedResult);
+            stopwatch.Reset();
+
+
+        } while (choice != 6 && i < 100);
+
+    }
+
+    int SetDifficulty()
     {
-        num1 = numGenerator.Next(1, 101);
-        num2 = numGenerator.Next(1, num1);
+        do
+        {
+            Console.WriteLine($"\nEnter difficulty level (1-3)");
+            readResult = Console.ReadLine();
+            if (int.TryParse(readResult, out int difficultyLevel))
+            {
+                if (difficultyLevel <= 0 || difficultyLevel > 3)
+                {
+                    Console.WriteLine("Invalid level");
+                }
+                else
+                {
+                    return difficultyLevel;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Enter integers");
+            }
+        } while (true);
+    }
+
+    void Menu()
+    {
+        do
+        {
+            Console.WriteLine("\nOperation Menu: ");
+            Console.WriteLine("1. Addition ");
+            Console.WriteLine("2. Subtraction ");
+            Console.WriteLine("3. Multiplication ");
+            Console.WriteLine("4. Division ");
+            Console.WriteLine("5. Log History ");
+            Console.WriteLine("6. Exit");
+            Console.Write("\nEnter choice ");
+            readResult = Console.ReadLine();
+            if (int.TryParse(readResult, out choice))
+            {
+                break;
+            }
+            else
+                Console.WriteLine("\nEnter valid integer!!!");
+        } while (true);
+        if (choice < 5)
+            GenerateNumbers(SetDifficulty());
+    }
+
+    void GenerateNumbers(int difficultyLevel)
+    {
+        Random numGenerator = new Random();
+        if(difficultyLevel == 1){
+            num1 = numGenerator.Next(1, 10);
+            num2 = numGenerator.Next(1, 10);
+        }
+        else if(difficultyLevel == 2){
+            num1 = numGenerator.Next(10, 101);
+            num2 = numGenerator.Next(1, 10);
+        }
+        else{
+            num1 = numGenerator.Next(10, 101);
+            num2 = numGenerator.Next(10, num1);  
+        }
+        
         if (choice == 4)
         {
             while (true)
@@ -49,153 +141,67 @@ void Menu()
             }
         }
     }
-}
 
-void Input()
-{
-    bool incorrectInput = true;
-    do
+    void Input()
     {
-        Console.Write("Enter you ans: ");
-        readResult = Console.ReadLine();
+        bool incorrectInput = true;
+        do
+        {
+            Console.Write("Enter you ans: ");
+            readResult = Console.ReadLine();
 
-        if (int.TryParse(readResult, out answer))
-            incorrectInput = false;
+            if (int.TryParse(readResult, out answer))
+                incorrectInput = false;
+            else
+                Console.WriteLine("Enter valid Integer");
+        } while (incorrectInput);
+    }
+
+
+    void Operation(char operation)
+    {
+        string question = $"What is {num1} {operation} {num2}?";
+        Console.WriteLine(question);
+        log.Add(question);
+    }
+
+    void LogHistory()
+    {
+        if (log.Count == 0)
+        {
+            Console.WriteLine("\nNo games played yet!!");
+            return;
+        }
+        foreach (string str in log)
+        {
+            Console.WriteLine(str);
+        }
+        Console.WriteLine();
+    }
+
+    void Compare(int calculatedResult)
+    {
+        log.Add($"Your answer: {answer}");
+        if (calculatedResult == answer)
+        {
+            log.Add("Congrats! Your answer is correct");
+            Console.WriteLine("Congrats! Your answer is correct");
+        }
         else
-            Console.WriteLine("Enter valid Integer");
-    } while (incorrectInput);
-}
-
-int Add()
-{
-    int result;
-
-    string question = $"What is {num1} + {num2}?";
-    Console.WriteLine(question);
-    result = num1 + num2;
-    log.Add(question);
-    return result;
-}
-
-int Subtract()
-{
-    int result;
-    string question = $"What is {num1} - {num2}?";
-    Console.WriteLine(question);
-    result = num1 - num2;
-    log.Add(question);
-    return result;
-}
-
-int Multiply()
-{
-    int result;
-    string question = $"What is {num1} * {num2}?";
-    Console.WriteLine(question);
-    result = num1 * num2;
-    log.Add(question);
-    return result;
-}
-
-int Division()
-{
-    int result;
-    string question = $"What is {num1} / {num2}?";
-    Console.WriteLine(question);
-    result = num1 / num2;
-    log.Add(question);
-    return result;
-
-}
-
-void LogHistory()
-{
-    if (log.Count == 0)
-    {
-        Console.WriteLine("\nNo games played yet!!");
-        return;
+        {
+            log.Add("Sorry your answer is wrong");
+            Console.WriteLine("Sorry your answer is wrong");
+        }
+        stopwatch.Stop();
+        TimeSpan timeTaken = stopwatch.Elapsed;
+        log.Add($"Time taken: {timeTaken.Seconds} seconds and {timeTaken.Milliseconds} milliseconds.");
+        Console.WriteLine($"Time taken: {timeTaken.Seconds} seconds and {timeTaken.Milliseconds} milliseconds.");
     }
-    foreach (string str in log)
+
+    public static void Main(string[] args)
     {
-        Console.WriteLine(str);
+        MathGame ob = new MathGame();
+        ob.Run();
     }
-    Console.WriteLine();
+
 }
-
-void Compare(int calculatedResult)
-{
-    log.Add($"Your answer: {answer}");
-    if (calculatedResult == answer)
-    {
-        log.Add("Congrats! Your answer is correct");
-        Console.WriteLine("Congrats! Your answer is correct");
-    }
-    else
-    {
-        log.Add("Sorry your answer is wrong");
-        Console.WriteLine("Sorry your answer is wrong");
-    }
-    stopwatch.Stop();
-    TimeSpan timeTaken = stopwatch.Elapsed;
-    log.Add($"Time taken: {timeTaken.Seconds} seconds and {timeTaken.Milliseconds} milliseconds.");
-    Console.WriteLine($"Time taken: {timeTaken.Seconds} seconds and {timeTaken.Milliseconds} milliseconds.");
-}
-
-int i = 0;
-do
-{
-
-    Menu();
-    int calculatedResult;
-
-    
-
-    switch (choice)
-    {
-        case 1:
-            log.Add($"\nGame {gamesPlayed}");
-            gamesPlayed++;
-            calculatedResult = Add();
-            stopwatch.Start();
-            Input();
-            Compare(calculatedResult);
-            break;
-        case 2:
-            log.Add($"\nGame {gamesPlayed}");
-            gamesPlayed++;
-            calculatedResult = Subtract();
-            stopwatch.Start();
-            Input();
-            Compare(calculatedResult);
-            break;
-        case 3:
-            log.Add($"\nGame {gamesPlayed}");
-            gamesPlayed++;
-            calculatedResult = Multiply();
-            stopwatch.Start();
-            Input();
-            Compare(calculatedResult);
-            break;
-        case 4:
-            log.Add($"\nGame {gamesPlayed}");
-            gamesPlayed++;
-            calculatedResult = Division();
-            stopwatch.Start();
-            Input();
-            Compare(calculatedResult);
-            break;
-        case 5:
-            LogHistory();
-            break;
-        case 6:
-            Console.WriteLine("\nExiting....\n");
-            break;
-        default:
-            Console.WriteLine("\nInvalid Choice\n");
-            break;
-    }
-    stopwatch.Reset();
-
-
-} while (choice != 6 && i < 100);
-
