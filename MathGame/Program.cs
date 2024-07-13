@@ -10,12 +10,14 @@ class MathGame
     private int choice;
     private int answer;
     private string? readResult;
-    private int gamesPlayed = 1;
+    private int numberOfQuestions;
     private Stopwatch stopwatch = new Stopwatch();
 
-    public void Run()
+    private void Run()
     {
+        int gamesPlayed = 1;
         int i = 0;
+        SetNumberOfQuestions();
         do
         {
             //To display Menu
@@ -72,11 +74,37 @@ class MathGame
             Compare(calculatedResult); //To compare user input with actual answer
 
             stopwatch.Reset();
+            i++;
 
-        } while (choice != 7 && i < 100);
+
+        } while (choice != 7 && i < numberOfQuestions);
+
+        if (i == numberOfQuestions)
+        {
+            while(true)
+            {
+                Console.WriteLine("Do you want to view previous games (y/n)");
+                readResult = Console.ReadLine();
+                if (readResult == "y")
+                {
+                    LogHistory();
+                     Console.WriteLine("\nExiting....\n");
+                    break;
+                }
+                else if (readResult == "n")
+                {
+                    Console.WriteLine("\nExiting....\n");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Enter y or n");
+                }
+            }
+        }
     }
 
-    int SetDifficulty()
+    private int GetDifficulty()
     {
         while (true)
         {
@@ -100,7 +128,25 @@ class MathGame
         }
     }
 
-    void Menu()
+    private void SetNumberOfQuestions()
+    {
+        bool validInput = false;
+        do
+        {
+            Console.Write("Enter the number of questions you want to answer: ");
+            readResult = Console.ReadLine();
+            if (int.TryParse(readResult, out numberOfQuestions) && numberOfQuestions > 0)
+            {
+                validInput = true;
+            }
+            else
+            {
+                Console.WriteLine("Enter a valid positive integer.");
+            }
+        } while (!validInput);
+    }
+
+    private void Menu()
     {
         while (true)
         {
@@ -120,13 +166,13 @@ class MathGame
                 break;
             else
                 Console.WriteLine("\nEnter valid integer!!!");
-        } 
+        }
 
         if (choice < 6)
-            GenerateNumbers(SetDifficulty());
+            GenerateNumbers(GetDifficulty());
     }
 
-    void GenerateNumbers(int difficultyLevel)
+    private void GenerateNumbers(int difficultyLevel)
     {
         Random numGenerator = new Random();
 
@@ -161,7 +207,7 @@ class MathGame
         }
     }
 
-    void Input()
+    private void Input()
     {
         while (true)
         {
@@ -176,14 +222,14 @@ class MathGame
     }
 
 
-    void Operation(char operation)
+    private void Operation(char operation)
     {
         string question = $"\nWhat is {num1} {operation} {num2}?";
         Console.WriteLine(question);
         log.Add(question);
     }
 
-    void LogHistory()
+    private void LogHistory()
     {
         if (log.Count == 0)
         {
@@ -198,7 +244,7 @@ class MathGame
         Console.WriteLine();
     }
 
-    void Compare(int calculatedResult)
+    private void Compare(int calculatedResult)
     {
         log.Add($"Your answer: {answer}");
 
