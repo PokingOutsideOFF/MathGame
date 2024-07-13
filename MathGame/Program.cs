@@ -18,60 +18,69 @@ class MathGame
         int i = 0;
         do
         {
+            //To display Menu
             Menu();
+
+            //To store calculated result of the two numbers
             int calculatedResult;
+
+            //To generate random game
+            if (choice == 5)
+            {
+                Random choiceGenerator = new Random();
+                choice = choiceGenerator.Next(1, 5);
+            }
+
+            //To store game number
+            if (choice < 5)
+            {
+                log.Add($"\nGame {gamesPlayed}");
+                gamesPlayed++;
+            }
             stopwatch.Start();
+
             switch (choice)
             {
-
                 case 1:
-                    log.Add($"\nGame {gamesPlayed}");
-                    gamesPlayed++;
                     Operation('+');
                     calculatedResult = num1 + num2;
                     break;
                 case 2:
-                    log.Add($"\nGame {gamesPlayed}");
-                    gamesPlayed++;
                     Operation('-');
                     calculatedResult = num1 - num2;
                     break;
                 case 3:
-                    log.Add($"\nGame {gamesPlayed}");
-                    gamesPlayed++;
                     Operation('*');
                     calculatedResult = num1 * num2;
                     break;
                 case 4:
-                    log.Add($"\nGame {gamesPlayed}");
-                    gamesPlayed++;
                     Operation('/');
                     calculatedResult = num1 / num2;
                     break;
-                case 5:
+                case 6:
                     LogHistory();
                     continue;
-                case 6:
+                case 7:
                     Console.WriteLine("\nExiting....\n");
                     continue;
                 default:
                     Console.WriteLine("\nInvalid Choice\n");
                     continue;
             }
-            Input();
-            Compare(calculatedResult);
+
+            Input();    //To get user input for the math question
+            Compare(calculatedResult); //To compare user input with actual answer
+
             stopwatch.Reset();
 
-
-        } while (choice != 6 && i < 100);
-
+        } while (choice != 7 && i < 100);
     }
 
     int SetDifficulty()
     {
-        do
+        while (true)
         {
-            Console.WriteLine($"\nEnter difficulty level (1-3)");
+            Console.Write($"\nEnter difficulty level (1-3): ");
             readResult = Console.ReadLine();
             if (int.TryParse(readResult, out int difficultyLevel))
             {
@@ -88,49 +97,59 @@ class MathGame
             {
                 Console.WriteLine("Enter integers");
             }
-        } while (true);
+        }
     }
 
     void Menu()
     {
-        do
+        while (true)
         {
             Console.WriteLine("\nOperation Menu: ");
             Console.WriteLine("1. Addition ");
             Console.WriteLine("2. Subtraction ");
             Console.WriteLine("3. Multiplication ");
             Console.WriteLine("4. Division ");
-            Console.WriteLine("5. Log History ");
-            Console.WriteLine("6. Exit");
-            Console.Write("\nEnter choice ");
+            Console.WriteLine("5. Random Game");
+            Console.WriteLine("6. Log History ");
+            Console.WriteLine("7. Exit");
+            Console.Write("\nEnter your choice: ");
+
             readResult = Console.ReadLine();
+
             if (int.TryParse(readResult, out choice))
-            {
                 break;
-            }
             else
                 Console.WriteLine("\nEnter valid integer!!!");
-        } while (true);
-        if (choice < 5)
+        } 
+
+        if (choice < 6)
             GenerateNumbers(SetDifficulty());
     }
 
     void GenerateNumbers(int difficultyLevel)
     {
         Random numGenerator = new Random();
-        if(difficultyLevel == 1){
+
+        //Easy Level
+        if (difficultyLevel == 1)
+        {
             num1 = numGenerator.Next(1, 10);
-            num2 = numGenerator.Next(1, 10);
+            num2 = numGenerator.Next(1, num1);
         }
-        else if(difficultyLevel == 2){
+        //Moderate Level
+        else if (difficultyLevel == 2)
+        {
             num1 = numGenerator.Next(10, 101);
-            num2 = numGenerator.Next(1, 10);
+            num2 = numGenerator.Next(1, num1);
         }
-        else{
-            num1 = numGenerator.Next(10, 101);
-            num2 = numGenerator.Next(10, num1);  
+        //Advanced Level
+        else
+        {
+            num1 = numGenerator.Next(50, 101);
+            num2 = numGenerator.Next(10, 50);
         }
-        
+
+        //Checking for remainder is zero 
         if (choice == 4)
         {
             while (true)
@@ -144,23 +163,22 @@ class MathGame
 
     void Input()
     {
-        bool incorrectInput = true;
-        do
+        while (true)
         {
-            Console.Write("Enter you ans: ");
+            Console.Write("Enter your ans: ");
             readResult = Console.ReadLine();
 
             if (int.TryParse(readResult, out answer))
-                incorrectInput = false;
+                return;
             else
                 Console.WriteLine("Enter valid Integer");
-        } while (incorrectInput);
+        }
     }
 
 
     void Operation(char operation)
     {
-        string question = $"What is {num1} {operation} {num2}?";
+        string question = $"\nWhat is {num1} {operation} {num2}?";
         Console.WriteLine(question);
         log.Add(question);
     }
@@ -172,6 +190,7 @@ class MathGame
             Console.WriteLine("\nNo games played yet!!");
             return;
         }
+
         foreach (string str in log)
         {
             Console.WriteLine(str);
@@ -182,6 +201,7 @@ class MathGame
     void Compare(int calculatedResult)
     {
         log.Add($"Your answer: {answer}");
+
         if (calculatedResult == answer)
         {
             log.Add("Congrats! Your answer is correct");
@@ -192,8 +212,10 @@ class MathGame
             log.Add("Sorry your answer is wrong");
             Console.WriteLine("Sorry your answer is wrong");
         }
+
         stopwatch.Stop();
         TimeSpan timeTaken = stopwatch.Elapsed;
+
         log.Add($"Time taken: {timeTaken.Seconds} seconds and {timeTaken.Milliseconds} milliseconds.");
         Console.WriteLine($"Time taken: {timeTaken.Seconds} seconds and {timeTaken.Milliseconds} milliseconds.");
     }
